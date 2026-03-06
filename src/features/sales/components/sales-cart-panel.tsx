@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
@@ -24,7 +24,7 @@ export function SalesCartPanel({
   isCheckoutPending,
 }: SalesCartPanelProps) {
   return (
-    <Card>
+    <Card className="border-border/80 bg-white/90">
       <CardHeader>
         <CardTitle>Carrito</CardTitle>
       </CardHeader>
@@ -97,4 +97,5 @@ export function SalesCartPanel({
     </Card>
   )
 }
+
 

@@ -14,7 +14,7 @@ export function InventoryFilters({
   categories,
 }: InventoryFiltersProps) {
   return (
-    <Card>
+    <Card className="border-border/80 bg-white/90">
       <CardHeader>
         <CardTitle>Filtros</CardTitle>
       </CardHeader>
@@ -52,4 +52,3 @@ export function InventoryFilters({
     </Card>
   )
 }
-

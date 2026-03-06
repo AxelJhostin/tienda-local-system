@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -21,7 +21,7 @@ export function SalesProductPicker({
   onSelectProduct,
 }: SalesProductPickerProps) {
   return (
-    <Card className="xl:col-span-2">
+    <Card className="border-border/80 bg-white/90 xl:col-span-2">
       <CardHeader>
         <CardTitle>Agregar items</CardTitle>
       </CardHeader>
@@ -91,4 +91,5 @@ export function SalesProductPicker({
     </Card>
   )
 }
+
 

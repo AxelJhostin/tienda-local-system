@@ -20,7 +20,7 @@ export function InventorySerialUnitsPanel({
   isDeactivating,
 }: InventorySerialUnitsPanelProps) {
   return (
-    <div className="space-y-3 rounded-md border p-3">
+    <div className="space-y-3 rounded-xl border border-border/70 bg-muted/30 p-3">
       <p className="text-sm font-medium">IMEI / seriales</p>
       <div className="space-y-2">
         <Label htmlFor="serialValue">Nuevo IMEI/serial</Label>
@@ -97,4 +97,3 @@ export function InventorySerialUnitsPanel({
     </div>
   )
 }
-

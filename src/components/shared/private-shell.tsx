@@ -10,15 +10,14 @@ export function PrivateShell({
   children: React.ReactNode
 }) {
   return (
-    <div className="min-h-screen bg-muted/30">
-      <div className="mx-auto grid min-h-screen max-w-7xl grid-cols-1 md:grid-cols-[240px_1fr]">
+    <div className="min-h-screen bg-transparent">
+      <div className="mx-auto grid min-h-screen w-full max-w-[1600px] grid-cols-1 px-0 md:grid-cols-[260px_1fr] md:px-4 md:py-4">
         <AppSidebar role={session.staffRole} />
-        <div className="flex min-h-screen flex-col border-l bg-background">
+        <div className="flex min-h-screen flex-col bg-transparent md:pl-4">
           <AppHeader session={session} />
-          <main className="flex-1">{children}</main>
+          <main className="flex-1 px-4 pb-6 pt-4 md:px-0 md:pb-0">{children}</main>
         </div>
       </div>
     </div>
   )
 }
-

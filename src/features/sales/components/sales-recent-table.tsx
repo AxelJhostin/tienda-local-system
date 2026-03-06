@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
@@ -10,7 +10,7 @@ function formatMoney(value: number) {
 
 export function SalesRecentTable({ sales, isLoading }: SalesRecentTableProps) {
   return (
-    <Card>
+    <Card className="border-border/80 bg-white/90">
       <CardHeader>
         <CardTitle>Ventas recientes</CardTitle>
       </CardHeader>
@@ -57,4 +57,5 @@ export function SalesRecentTable({ sales, isLoading }: SalesRecentTableProps) {
     </Card>
   )
 }
+
 

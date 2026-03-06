@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -24,7 +24,7 @@ export function SalesItemEditor({
   if (!selectedProduct) return null
 
   return (
-    <div className="grid gap-3 rounded-md border p-4 md:grid-cols-4">
+    <div className="grid gap-3 rounded-xl border border-border/70 bg-muted/30 p-4 md:grid-cols-4">
       <div className="md:col-span-2">
         <p className="text-sm font-medium">{selectedProduct.name}</p>
         <p className="text-xs text-muted-foreground">
@@ -83,4 +83,5 @@ export function SalesItemEditor({
     </div>
   )
 }
+
 

@@ -1,6 +1,7 @@
 'use client'
 
 import { useRouter } from 'next/navigation'
+import { LogOut } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { useToast } from '@/hooks/use-toast'
 import { createClient } from '@/lib/supabase/client'
@@ -27,9 +28,9 @@ export default function LogoutButton() {
   }
 
   return (
-    <Button variant="outline" onClick={handleLogout}>
+    <Button variant="outline" size="sm" className="rounded-full px-3" onClick={handleLogout}>
+      <LogOut className="h-4 w-4" />
       Cerrar sesion
     </Button>
   )
 }
-

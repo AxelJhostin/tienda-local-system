@@ -19,7 +19,7 @@ export function InventoryProductsTable({
   onSelectProduct,
 }: InventoryProductsTableProps) {
   return (
-    <Card className="xl:col-span-2">
+    <Card className="border-border/80 bg-white/90 xl:col-span-2">
       <CardHeader>
         <CardTitle>Productos</CardTitle>
       </CardHeader>
@@ -87,4 +87,3 @@ export function InventoryProductsTable({
     </Card>
   )
 }
-

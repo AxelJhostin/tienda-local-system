@@ -14,7 +14,7 @@ export function InventoryQuantityAdjuster({
   isPending,
 }: InventoryQuantityAdjusterProps) {
   return (
-    <div className="space-y-3 rounded-md border p-3">
+    <div className="space-y-3 rounded-xl border border-border/70 bg-muted/30 p-3">
       <p className="text-sm font-medium">Ajustar stock por cantidad</p>
       <div className="space-y-2">
         <Label htmlFor="adjustQuantity">Cantidad (+/-)</Label>
@@ -40,4 +40,3 @@ export function InventoryQuantityAdjuster({
     </div>
   )
 }
-

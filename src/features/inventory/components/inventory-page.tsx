@@ -156,7 +156,7 @@ export function InventoryPageContent() {
           onSelectProduct={setSelectedProductId}
         />
 
-        <Card>
+        <Card className="border-border/80 bg-white/90">
           <CardHeader>
             <CardTitle>Gestion de stock</CardTitle>
           </CardHeader>
@@ -209,4 +209,3 @@ export function InventoryPageContent() {
     </div>
   )
 }
-
