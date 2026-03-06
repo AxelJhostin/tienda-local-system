@@ -1,9 +1,10 @@
 import './globals.css'
 import QueryProvider from '@/lib/providers/query-provider'
+import { Toaster } from '@/components/ui/toaster'
 
 export const metadata = {
   title: 'Sistema de Tienda',
-  description: 'Sistema interno de gestión para tienda de tecnología',
+  description: 'Sistema interno de gestion para tienda de tecnologia',
 }
 
 export default function RootLayout({
@@ -14,8 +15,12 @@ export default function RootLayout({
   return (
     <html lang="es">
       <body>
-        <QueryProvider>{children}</QueryProvider>
+        <QueryProvider>
+          {children}
+          <Toaster />
+        </QueryProvider>
       </body>
     </html>
   )
 }
+
