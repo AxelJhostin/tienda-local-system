@@ -19,9 +19,10 @@ export function AppHeader({ session }: { session: ServerSession }) {
             <MobileSidebarMenu role={session.staffRole} />
             <div>
               <p className="text-[11px] font-bold uppercase tracking-[0.12em] text-muted-foreground">
-                Sistema interno
+                Plataforma operativa
               </p>
               <p className="text-sm font-semibold">{dateLabel}</p>
+              <p className="text-xs text-muted-foreground">InvenTrack · entorno interno</p>
             </div>
           </div>
 

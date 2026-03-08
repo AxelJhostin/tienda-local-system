@@ -4,9 +4,11 @@ import { useState } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import {
+  AlertTriangle,
   Boxes,
   ChartNoAxesCombined,
   CircleDollarSign,
+  History,
   LayoutDashboard,
   Menu,
   ShieldCheck,
@@ -14,24 +16,51 @@ import {
   Users,
   WalletCards,
 } from 'lucide-react'
+import type { LucideIcon } from 'lucide-react'
+import { Badge } from '@/components/ui/badge'
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
 import { Sheet, SheetContent, SheetTitle, SheetTrigger } from '@/components/ui/sheet'
 
 type SidebarRole = 'admin' | 'seller'
+type SidebarItem = {
+  href: string
+  label: string
+  icon: LucideIcon
+  adminOnly?: boolean
+  comingSoon?: boolean
+}
 
-const baseItems = [
-  { href: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
-  { href: '/inventory', label: 'Inventory', icon: Boxes },
-  { href: '/sales', label: 'Sales', icon: CircleDollarSign },
-  { href: '/layaway', label: 'Layaway', icon: WalletCards },
-  { href: '/customers', label: 'Customers', icon: Users },
-  { href: '/warranties', label: 'Warranties', icon: ShieldCheck },
-  { href: '/reports', label: 'Reports', icon: ChartNoAxesCombined, adminOnly: true },
-  { href: '/users', label: 'Users', icon: UserRoundCog, adminOnly: true },
+type SidebarSection = {
+  title: string
+  items: SidebarItem[]
+}
+
+const navigationSections: SidebarSection[] = [
+  {
+    title: 'Principal',
+    items: [{ href: '/dashboard', label: 'Dashboard', icon: LayoutDashboard }],
+  },
+  {
+    title: 'Operacion',
+    items: [
+      { href: '/inventory', label: 'Inventario', icon: Boxes },
+      { href: '/sales', label: 'Ventas', icon: CircleDollarSign },
+      { href: '/stock-low', label: 'Stock Bajo', icon: AlertTriangle, comingSoon: true },
+      { href: '/history', label: 'Historial', icon: History, comingSoon: true },
+    ],
+  },
+  {
+    title: 'Gestion comercial',
+    items: [
+      { href: '/reports', label: 'Reportes', icon: ChartNoAxesCombined, adminOnly: true },
+      { href: '/customers', label: 'Clientes', icon: Users },
+      { href: '/layaway', label: 'Apartados', icon: WalletCards },
+      { href: '/warranties', label: 'Garantias', icon: ShieldCheck },
+      { href: '/users', label: 'Personal', icon: UserRoundCog, adminOnly: true },
+    ],
+  },
 ]
-
-type SidebarItem = (typeof baseItems)[number]
 
 function isItemActive(pathname: string, href: string) {
   return pathname === href || pathname.startsWith(`${href}/`)
@@ -65,7 +94,20 @@ function SidebarLinks({
             )}
           >
             <Icon className={cn('h-4 w-4', active ? 'opacity-100' : 'opacity-75')} />
-            <span>{item.label}</span>
+            <span className="flex-1">{item.label}</span>
+            {item.comingSoon ? (
+              <Badge
+                variant="outline"
+                className={cn(
+                  'rounded-full border px-2 py-0 text-[10px] font-semibold uppercase tracking-wide',
+                  active
+                    ? 'border-primary-foreground/45 text-primary-foreground/85'
+                    : 'border-border text-muted-foreground'
+                )}
+              >
+                Prox
+              </Badge>
+            ) : null}
           </Link>
         )
       })}
@@ -82,21 +124,30 @@ function SidebarContent({
   pathname: string
   onNavigate?: () => void
 }) {
-  const items = baseItems.filter((item) => !item.adminOnly || role === 'admin')
+  const sections = navigationSections
+    .map((section) => ({
+      ...section,
+      items: section.items.filter((item) => !item.adminOnly || role === 'admin'),
+    }))
+    .filter((section) => section.items.length > 0)
 
   return (
     <div className="flex h-full flex-col">
       <div className="rounded-2xl border border-blue-100/80 bg-gradient-to-br from-blue-50 to-white p-4">
         <p className="text-[11px] font-bold uppercase tracking-[0.12em] text-primary/75">Store OS</p>
         <p className="mt-1 text-lg font-extrabold tracking-tight">InvenTrack POS</p>
-        <p className="mt-1 text-xs text-muted-foreground">Gestion comercial e inventario</p>
+        <p className="mt-1 text-xs text-muted-foreground">Operacion comercial e inventario</p>
       </div>
 
-      <div className="mt-6 flex-1">
-        <p className="mb-3 px-2 text-[11px] font-bold uppercase tracking-[0.12em] text-muted-foreground">
-          Navigation
-        </p>
-        <SidebarLinks pathname={pathname} items={items} onNavigate={onNavigate} />
+      <div className="mt-6 flex-1 space-y-5">
+        {sections.map((section) => (
+          <div key={section.title}>
+            <p className="mb-2 px-2 text-[11px] font-bold uppercase tracking-[0.12em] text-muted-foreground">
+              {section.title}
+            </p>
+            <SidebarLinks pathname={pathname} items={section.items} onNavigate={onNavigate} />
+          </div>
+        ))}
       </div>
 
       <div className="mt-6 rounded-xl border border-border/70 bg-card/70 px-3 py-3 text-xs text-muted-foreground">
