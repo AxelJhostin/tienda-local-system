@@ -1,4 +1,4 @@
-﻿'use client'
+'use client'
 
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
@@ -23,10 +23,16 @@ export function SalesCartPanel({
   onCheckout,
   isCheckoutPending,
 }: SalesCartPanelProps) {
+  const itemCount = cart.length
+
   return (
     <Card className="border-border/80 bg-white/90">
-      <CardHeader>
-        <CardTitle>Carrito</CardTitle>
+      <CardHeader className="space-y-2">
+        <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Paso 3</p>
+        <CardTitle>Carrito y confirmacion</CardTitle>
+        <p className="text-sm text-muted-foreground">
+          Revisa los items agregados y confirma la venta en una sola operacion.
+        </p>
       </CardHeader>
       <CardContent className="space-y-4">
         <div className="space-y-2">
@@ -56,6 +62,11 @@ export function SalesCartPanel({
           />
         </div>
 
+        <div className="flex items-center justify-between rounded-md border bg-muted/30 px-3 py-2 text-sm">
+          <span className="font-medium">Items en carrito</span>
+          <span className="font-semibold">{itemCount}</span>
+        </div>
+
         <div className="max-h-60 space-y-2 overflow-auto rounded-md border p-2">
           {cart.length === 0 && <p className="text-sm text-muted-foreground">Sin items agregados.</p>}
           {cart.map((item) => (
@@ -75,27 +86,27 @@ export function SalesCartPanel({
                   : `Cantidad: ${item.quantity}`}
               </p>
               <p className="text-xs">
-                {formatMoney(item.unitPriceSold)} - subtotal{' '}
-                {formatMoney(item.quantity * item.unitPriceSold)}
+                {formatMoney(item.unitPriceSold)} - subtotal {formatMoney(item.quantity * item.unitPriceSold)}
               </p>
             </div>
           ))}
         </div>
 
-        <div className="flex items-center justify-between text-sm font-medium">
-          <span>Total</span>
-          <span>{formatMoney(totalAmount)}</span>
-        </div>
+        <div className="sticky bottom-0 space-y-3 rounded-md border bg-white p-3 shadow-sm">
+          <div className="flex items-center justify-between text-sm font-medium">
+            <span>Total de la venta</span>
+            <span className="text-lg font-semibold">{formatMoney(totalAmount)}</span>
+          </div>
 
-        <Button className="w-full" onClick={onCheckout} disabled={isCheckoutPending}>
-          {isCheckoutPending ? 'Procesando...' : 'Confirmar venta'}
-        </Button>
-        <p className="text-xs text-muted-foreground">
-          Nota tecnica: cada item se registra con su RPC transaccional y referencia de ticket.
-        </p>
+          <Button
+            className="h-11 w-full text-base font-semibold"
+            onClick={onCheckout}
+            disabled={isCheckoutPending || cart.length === 0}
+          >
+            {isCheckoutPending ? 'Procesando...' : 'Confirmar venta'}
+          </Button>
+        </div>
       </CardContent>
     </Card>
   )
 }
-
-

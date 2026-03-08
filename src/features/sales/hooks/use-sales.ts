@@ -1,10 +1,14 @@
-'use client'
+﻿'use client'
 
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { queryKeys } from '@/lib/constants/query-keys'
 import { customersService } from '@/lib/services/customers.service'
 import { inventoryService } from '@/lib/services/inventory.service'
-import { salesService } from '@/lib/services/sales.service'
+import {
+  salesService,
+  type CheckoutSaleResult,
+  type CreateCheckoutSaleItemInput,
+} from '@/lib/services/sales.service'
 
 export function useSalesProducts(search: string) {
   return useQuery({
@@ -53,50 +57,37 @@ export function useCheckoutSales() {
       items: CheckoutSaleCartItem[]
       customerId?: string | null
       notes?: string | null
-      ticketRef: string
-    }) => {
-      const createdSaleIds: string[] = []
-
-      try {
-        for (let index = 0; index < input.items.length; index += 1) {
-          const item = input.items[index]
-          const itemNoteBase = input.notes?.trim() ? `${input.notes.trim()} | ` : ''
-          const itemNote = `${itemNoteBase}${input.ticketRef} item ${index + 1}/${input.items.length}`
-
-          if (item.mode === 'quantity') {
-            const saleId = await salesService.createQuantitySale({
-              productId: item.productId,
-              quantity: item.quantity,
-              unitPriceSold: item.unitPriceSold,
-              customerId: input.customerId ?? null,
-              notes: itemNote,
-            })
-            createdSaleIds.push(saleId)
-            continue
-          }
-
-          const saleId = await salesService.createSerialSale({
+      checkoutRef?: string | null
+    }): Promise<CheckoutSaleResult> => {
+      const checkoutItems: CreateCheckoutSaleItemInput[] = input.items.map((item) => {
+        if (item.mode === 'quantity') {
+          return {
+            mode: 'quantity',
             productId: item.productId,
-            serializedUnitId: item.serializedUnitId ?? '',
+            quantity: item.quantity,
             unitPriceSold: item.unitPriceSold,
-            customerId: input.customerId ?? null,
-            notes: itemNote,
-          })
-          createdSaleIds.push(saleId)
+          }
         }
-      } catch (error) {
-        const partialCount = createdSaleIds.length
-        const baseMessage =
-          error instanceof Error ? error.message : 'Error desconocido en registro de ventas.'
-        if (partialCount > 0) {
-          throw new Error(
-            `Se registraron ${partialCount} ítems antes del error. ${baseMessage}`
-          )
-        }
-        throw error
-      }
 
-      return createdSaleIds
+        if (!item.serializedUnitId) {
+          throw new Error('Item serial sin serializedUnitId.')
+        }
+
+        return {
+          mode: 'serial',
+          productId: item.productId,
+          serializedUnitId: item.serializedUnitId,
+          unitPriceSold: item.unitPriceSold,
+          quantity: 1,
+        }
+      })
+
+      return salesService.createCheckoutSale({
+        items: checkoutItems,
+        customerId: input.customerId ?? null,
+        notes: input.notes ?? null,
+        checkoutRef: input.checkoutRef ?? null,
+      })
     },
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: ['inventory'] })

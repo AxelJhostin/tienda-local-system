@@ -22,15 +22,21 @@ export function SalesProductPicker({
 }: SalesProductPickerProps) {
   return (
     <Card className="border-border/80 bg-white/90 xl:col-span-2">
-      <CardHeader>
-        <CardTitle>Agregar items</CardTitle>
+      <CardHeader className="space-y-2">
+        <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+          Paso 1
+        </p>
+        <CardTitle>Seleccion de producto</CardTitle>
+        <p className="text-sm text-muted-foreground">
+          Busca un producto y revisa su tipo de inventario y precio minimo antes de seleccionarlo.
+        </p>
       </CardHeader>
       <CardContent className="space-y-4">
         <div className="space-y-2">
           <Label htmlFor="salesSearch">Buscar producto</Label>
           <Input
             id="salesSearch"
-            placeholder="Nombre o codigo"
+            placeholder="Nombre o codigo interno"
             value={search}
             onChange={(event) => onSearchChange(event.target.value)}
           />
@@ -62,8 +68,8 @@ export function SalesProductPicker({
                   <TableCell>{product.current_stock}</TableCell>
                   <TableCell className="text-xs">
                     <div>{formatMoney(product.suggested_price)}</div>
-                    <div className="text-muted-foreground">
-                      min {formatMoney(product.minimum_price)}
+                    <div className="font-medium text-amber-700">
+                      Min {formatMoney(product.minimum_price)}
                     </div>
                   </TableCell>
                   <TableCell className="text-right">
@@ -81,6 +87,13 @@ export function SalesProductPicker({
                 <TableRow>
                   <TableCell colSpan={5} className="text-center text-muted-foreground">
                     Cargando productos...
+                  </TableCell>
+                </TableRow>
+              )}
+              {!isLoading && products.length === 0 && (
+                <TableRow>
+                  <TableCell colSpan={5} className="text-center text-muted-foreground">
+                    No se encontraron productos para el filtro actual.
                   </TableCell>
                 </TableRow>
               )}

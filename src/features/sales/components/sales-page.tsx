@@ -1,6 +1,7 @@
 'use client'
 
 import { useMemo, useState } from 'react'
+import { Badge } from '@/components/ui/badge'
 import { useToast } from '@/hooks/use-toast'
 import {
   useCheckoutSales,
@@ -49,6 +50,7 @@ export function SalesPageContent() {
     () => cart.reduce((acc, item) => acc + item.quantity * item.unitPriceSold, 0),
     [cart]
   )
+  const cartItemCount = cart.length
 
   const handlePickProduct = (product: InventoryProduct) => {
     setSelectedProductId(product.id)
@@ -113,6 +115,10 @@ export function SalesPageContent() {
     setCart((prev) => [...prev, item])
     setSelectedQuantity(1)
     setSelectedSerializedUnitId('')
+    toast({
+      title: 'Item agregado al carrito',
+      description: `${item.productName} | subtotal $${(item.quantity * item.unitPriceSold).toLocaleString('es-CL')}`,
+    })
   }
 
   const handleRemoveFromCart = (itemId: string) => {
@@ -125,10 +131,10 @@ export function SalesPageContent() {
       return
     }
 
-    const ticketRef = `TICKET-${new Date().toISOString().replace(/[-:.TZ]/g, '').slice(0, 14)}`
+    const checkoutRef = `CHECKOUT-${crypto.randomUUID()}`
 
     try {
-      const saleIds = await checkoutMutation.mutateAsync({
+      const result = await checkoutMutation.mutateAsync({
         items: cart.map((item) => ({
           mode: item.mode,
           productId: item.productId,
@@ -138,7 +144,7 @@ export function SalesPageContent() {
         })),
         customerId: customerId === 'none' ? null : customerId,
         notes: notes.trim() || null,
-        ticketRef,
+        checkoutRef,
       })
 
       setCart([])
@@ -147,8 +153,8 @@ export function SalesPageContent() {
       setSelectedSerializedUnitId('')
       setSelectedQuantity(1)
       toast({
-        title: 'Venta registrada',
-        description: `Items procesados: ${saleIds.length}. Ref: ${ticketRef}`,
+        title: result.idempotent_replay ? 'Venta ya registrada' : 'Venta registrada',
+        description: `Venta ${result.sale_id} - items ${result.item_count} - total $${result.total_amount.toLocaleString('es-CL')} - ref ${result.checkout_ref ?? checkoutRef}`,
       })
     } catch (error) {
       toast({
@@ -161,6 +167,24 @@ export function SalesPageContent() {
 
   return (
     <div className="grid gap-4">
+      <section className="space-y-3 rounded-xl border border-border/80 bg-white/90 p-4">
+        <h2 className="text-base font-semibold">Flujo de venta</h2>
+        <div className="flex flex-wrap items-center gap-2 text-xs">
+          <Badge variant="secondary">1. Seleccionar producto</Badge>
+          <Badge variant="secondary">2. Editar item</Badge>
+          <Badge variant="secondary">3. Agregar al carrito</Badge>
+          <Badge variant="secondary">4. Confirmar venta</Badge>
+        </div>
+        <div className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
+          <p>
+            <span className="font-medium text-foreground">{cartItemCount}</span> item(s) en carrito
+          </p>
+          <p>
+            Total actual: <span className="font-semibold text-foreground">${totalAmount.toLocaleString('es-CL')}</span>
+          </p>
+        </div>
+      </section>
+
       <div className="grid gap-4 xl:grid-cols-3">
         <div className="space-y-4 xl:col-span-2">
           <SalesProductPicker
@@ -202,4 +226,3 @@ export function SalesPageContent() {
     </div>
   )
 }
-

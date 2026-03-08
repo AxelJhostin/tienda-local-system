@@ -161,6 +161,7 @@ export type Database = {
           customer_id: string | null
           total_amount: number
           notes: string | null
+          checkout_ref: string | null
           created_at: string
         }
         Insert: {
@@ -170,6 +171,7 @@ export type Database = {
           customer_id?: string | null
           total_amount?: number
           notes?: string | null
+          checkout_ref?: string | null
           created_at?: string
         }
         Update: Partial<Database['public']['Tables']['sales']['Insert']>
@@ -385,6 +387,15 @@ export type Database = {
           p_notes?: string | null
         }
         Returns: string
+      }
+      create_checkout_sale: {
+        Args: {
+          p_items: Json
+          p_customer_id?: string | null
+          p_notes?: string | null
+          p_checkout_ref?: string | null
+        }
+        Returns: Json
       }
       create_layaway_plan: {
         Args: {
