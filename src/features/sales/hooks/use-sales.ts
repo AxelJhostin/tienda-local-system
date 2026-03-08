@@ -8,6 +8,7 @@ import {
   salesService,
   type CheckoutSaleResult,
   type CreateCheckoutSaleItemInput,
+  type SalesHistoryFilters,
 } from '@/lib/services/sales.service'
 
 export function useSalesProducts(search: string) {
@@ -38,6 +39,17 @@ export function useRecentSales(limit = 20) {
   return useQuery({
     queryKey: queryKeys.sales.recent(limit),
     queryFn: () => salesService.listRecentSales(limit),
+  })
+}
+
+export function useSalesHistory(filters: SalesHistoryFilters) {
+  return useQuery({
+    queryKey: queryKeys.sales.history({
+      dateFrom: filters.dateFrom ?? '',
+      dateTo: filters.dateTo ?? '',
+      limit: filters.limit ?? 200,
+    }),
+    queryFn: () => salesService.listSalesHistory(filters),
   })
 }
 

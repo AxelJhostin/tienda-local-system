@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import {
   AlertTriangle,
+  Bell,
   Boxes,
   ChartNoAxesCombined,
   CircleDollarSign,
@@ -46,8 +47,9 @@ const navigationSections: SidebarSection[] = [
     items: [
       { href: '/inventory', label: 'Inventario', icon: Boxes },
       { href: '/sales', label: 'Ventas', icon: CircleDollarSign },
-      { href: '/stock-low', label: 'Stock Bajo', icon: AlertTriangle, comingSoon: true },
-      { href: '/history', label: 'Historial', icon: History, comingSoon: true },
+      { href: '/stock-low', label: 'Stock Bajo', icon: AlertTriangle },
+      { href: '/history', label: 'Historial', icon: History },
+      { href: '/notifications', label: 'Notificaciones', icon: Bell },
     ],
   },
   {

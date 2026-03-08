@@ -1,6 +1,6 @@
 import type { InventoryProduct, SerializedUnit } from '@/lib/services/inventory.service'
 import type { CustomerListItem } from '@/lib/services/customers.service'
-import type { RecentSaleItem } from '@/lib/services/sales.service'
+import type { RecentSaleItem, SalesHistoryItem } from '@/lib/services/sales.service'
 
 export type CartItem = {
   id: string
@@ -53,3 +53,7 @@ export type SalesRecentTableProps = {
   isLoading: boolean
 }
 
+export type SalesHistoryTableProps = {
+  sales: SalesHistoryItem[]
+  isLoading: boolean
+}

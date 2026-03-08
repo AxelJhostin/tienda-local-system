@@ -18,5 +18,18 @@ export const queryKeys = {
   },
   sales: {
     recent: (limit = 20) => ['sales', 'recent', limit] as const,
+    dailySummary: (date: string) => ['sales', 'daily-summary', date] as const,
+    history: (params?: { dateFrom?: string; dateTo?: string; limit?: number }) =>
+      ['sales', 'history', params ?? {}] as const,
+  },
+  reports: {
+    commercialSummary: (params: { dateFrom: string; dateTo: string }) =>
+      ['reports', 'commercial-summary', params] as const,
+  },
+  users: {
+    staffList: ['users', 'staff-list'] as const,
+  },
+  notifications: {
+    list: (date: string) => ['notifications', 'list', date] as const,
   },
 } as const

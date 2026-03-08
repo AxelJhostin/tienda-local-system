@@ -3,7 +3,7 @@ export * from '@/lib/services/catalog.service'
 export * from '@/lib/services/customers.service'
 export * from '@/lib/services/inventory.service'
 export * from '@/lib/services/layaway.service'
+export * from '@/lib/services/notifications.service'
 export * from '@/lib/services/products.service'
 export * from '@/lib/services/reports.service'
 export * from '@/lib/services/sales.service'
-

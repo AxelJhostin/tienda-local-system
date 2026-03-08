@@ -1,13 +1,19 @@
-export default function HistoryPage() {
+import { requireServerSession } from '@/lib/auth/server'
+import { SalesHistoryPageContent } from '@/features/sales/components/sales-history-page'
+
+export default async function HistoryPage() {
+  await requireServerSession()
+
   return (
-    <div className="mx-auto w-full max-w-7xl">
-      <section className="rounded-3xl border border-border/70 bg-card/85 p-6 shadow-[0_18px_42px_-32px_rgba(17,24,39,.45)]">
+    <div className="mx-auto flex w-full max-w-7xl flex-col gap-4">
+      <section className="rounded-3xl border border-border/70 bg-card/85 p-5 shadow-[0_18px_42px_-32px_rgba(17,24,39,.45)]">
         <p className="text-xs font-bold uppercase tracking-[0.14em] text-primary/80">Historial</p>
-        <h1 className="mt-2 text-2xl font-extrabold tracking-tight">Movimientos historicos</h1>
+        <h1 className="mt-2 text-2xl font-extrabold tracking-tight">Historial de ventas</h1>
         <p className="mt-2 text-sm text-muted-foreground">
-          Modulo en construccion. Proximamente disponible con filtros por fecha, vendedor y tipo de venta.
+          Consulta ventas registradas con filtros operativos por texto y fecha.
         </p>
       </section>
+      <SalesHistoryPageContent />
     </div>
   )
 }

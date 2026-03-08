@@ -9,6 +9,8 @@ export type StaffProfile = {
   username: string
   role: StaffRole
   is_active: boolean
+  created_at?: string
+  updated_at?: string
 }
 
 export const authService = {
@@ -37,5 +39,36 @@ export const authService = {
 
     return data
   },
-}
 
+  async listStaffProfiles(): Promise<StaffProfile[]> {
+    const supabase = createClient()
+    const { data, error } = await supabase
+      .from('staff_profiles')
+      .select('id, full_name, username, role, is_active, created_at, updated_at')
+      .order('full_name', { ascending: true })
+
+    if (error) {
+      throw toServiceError(error, 'No se pudo cargar el listado de personal.')
+    }
+
+    return data ?? []
+  },
+
+  async setStaffActiveStatus(input: { staffId: string; isActive: boolean }): Promise<StaffProfile> {
+    const supabase = createClient()
+    const { data, error } = await supabase
+      .from('staff_profiles')
+      .update({
+        is_active: input.isActive,
+      })
+      .eq('id', input.staffId)
+      .select('id, full_name, username, role, is_active, created_at, updated_at')
+      .single()
+
+    if (error) {
+      throw toServiceError(error, 'No se pudo actualizar el estado del usuario.')
+    }
+
+    return data
+  },
+}

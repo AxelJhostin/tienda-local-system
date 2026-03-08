@@ -1,5 +1,6 @@
 import { Badge } from '@/components/ui/badge'
 import LogoutButton from '@/features/auth/components/logout-button'
+import { HeaderNotifications } from '@/features/notifications/components/header-notifications'
 import type { ServerSession } from '@/lib/auth/server'
 import { MobileSidebarMenu } from '@/components/shared/app-sidebar'
 
@@ -22,11 +23,13 @@ export function AppHeader({ session }: { session: ServerSession }) {
                 Plataforma operativa
               </p>
               <p className="text-sm font-semibold">{dateLabel}</p>
-              <p className="text-xs text-muted-foreground">InvenTrack · entorno interno</p>
+              <p className="text-xs text-muted-foreground">InvenTrack - entorno interno</p>
             </div>
           </div>
 
           <div className="flex items-center gap-2">
+            <HeaderNotifications />
+
             <Badge
               variant="secondary"
               className="hidden rounded-full border border-blue-100 bg-blue-50 px-3 py-1 font-semibold text-blue-700 sm:inline-flex"
