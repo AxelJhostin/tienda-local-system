@@ -9,6 +9,7 @@ export const queryKeys = {
   inventory: {
     products: (params?: { search?: string; categoryId?: string }) =>
       ['inventory', 'products', params ?? {}] as const,
+    lowStock: ['inventory', 'low-stock'] as const,
     serializedUnits: (productId: string) =>
       ['inventory', 'serialized-units', productId] as const,
   },

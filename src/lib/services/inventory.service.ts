@@ -148,6 +148,11 @@ export const inventoryService = {
     }))
   },
 
+  async listLowStockProducts(): Promise<InventoryProduct[]> {
+    const products = await inventoryService.listProducts()
+    return products.filter((product) => product.current_stock <= product.low_stock_threshold)
+  },
+
   async listSerializedUnitsByProduct(productId: string): Promise<SerializedUnit[]> {
     const supabase = createClient()
     const { data, error } = await supabase

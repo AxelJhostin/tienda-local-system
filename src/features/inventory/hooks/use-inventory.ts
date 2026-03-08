@@ -30,6 +30,13 @@ export function useSerializedUnits(productId: string | null) {
   })
 }
 
+export function useLowStockProducts() {
+  return useQuery({
+    queryKey: queryKeys.inventory.lowStock,
+    queryFn: () => inventoryService.listLowStockProducts(),
+  })
+}
+
 export function useAdjustQuantityStock() {
   const queryClient = useQueryClient()
   return useMutation({
@@ -63,4 +70,3 @@ export function useDeactivateSerializedUnit() {
     },
   })
 }
-

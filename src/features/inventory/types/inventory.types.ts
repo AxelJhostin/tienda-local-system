@@ -6,6 +6,8 @@ export type InventoryCategoryOption = {
   icon: string | null
 }
 
+export type LowStockAlertLevel = 'out' | 'critical' | 'low'
+
 export type InventoryProductsTableProps = {
   products: InventoryProduct[]
   isLoading: boolean
@@ -43,3 +45,7 @@ export type InventorySerialUnitsPanelProps = {
   isDeactivating: boolean
 }
 
+export type InventoryLowStockTableProps = {
+  products: InventoryProduct[]
+  isLoading: boolean
+}
